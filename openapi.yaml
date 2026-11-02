@@ -1,0 +1,318 @@
+openapi: 3.0.3
+info:
+  title: MiniBlog API
+  version: 1.0.0
+  description: API para la gestión de autores y publicaciones de un blog.
+servers:
+  - url: http://localhost:3000
+    description: Servidor local de desarrollo
+paths:
+  /authors:
+    get:
+      summary: Obtener todos los autores
+      responses:
+        '200':
+          description: Lista de autores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+    post:
+      summary: Crear un nuevo autor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorInput'
+      responses:
+        '201':
+          description: Autor creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+  /authors/{id}:
+    get:
+      summary: Obtener un autor por su ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del autor a buscar
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Autor encontrado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '404':
+          description: Autor no encontrado
+    put:
+      summary: Actualizar un autor existente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del autor a actualizar
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorInput'
+      responses:
+        '200':
+          description: Autor actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '400':
+          description: Datos de entrada inválidos
+        '404':
+          description: Autor no encontrado
+    delete:
+      summary: Eliminar un autor por su ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del autor a eliminar
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Autor eliminado exitosamente
+        '404':
+          description: Autor no encontrado
+  /posts:
+    get:
+      summary: Obtener todas las publicaciones
+      responses:
+        '200':
+          description: Lista de publicaciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+    post:
+      summary: Crear una nueva publicación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '201':
+          description: Publicación creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '400':
+          description: Datos de entrada inválidos
+        '404':
+          description: Autor no encontrado
+  /posts/{id}:
+    get:
+      summary: Obtener una publicación por su ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la publicación a buscar
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Publicación encontrada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Publicación no encontrada
+    put:
+      summary: Actualizar una publicación existente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la publicación a actualizar
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '200':
+          description: Publicación actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '400':
+          description: Datos de entrada inválidos
+        '404':
+          description: Publicación no encontrada
+    delete:
+      summary: Eliminar una publicación por su ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la publicación a eliminar
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Publicación eliminada exitosamente
+        '404':
+          description: Publicación no encontrada
+  /posts/author/{authorId}:
+    get:
+      summary: Obtener publicaciones por el ID del autor
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          description: ID del autor cuyas publicaciones se quieren obtener
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de publicaciones del autor
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostByAuthor'
+        '404':
+          description: Autor no encontrado
+components:
+  schemas:
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        bio:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - email
+        - created_at
+    AuthorInput:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        bio:
+          type: string
+      required:
+        - name
+        - email
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        content:
+          type: string
+        author_id:
+          type: integer
+          format: int64
+        published:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - content
+        - author_id
+        - published
+        - created_at
+    PostInput:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        author_id:
+          type: integer
+          format: int64
+        published:
+          type: boolean
+      required:
+        - title
+        - content
+        - author_id
+    PostByAuthor:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        content:
+          type: string
+        author_id:
+          type: integer
+          format: int64
+        published:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        author_name:
+          type: string
+        author_email:
+          type: string
+          format: email
+        author_bio:
+          type: string
+          nullable: true
+      required:
+        - id
+        - title
+        - content
+        - author_id
+        - published
+        - created_at
+        - author_name
+        - author_email
