@@ -1,4 +1,24 @@
 const pool = require('../db');
+
+const validatePostInput = ({ title, content, author_id, published }) => {
+    if (typeof title !== 'string' || title.trim().length === 0) {
+        return 'El título es obligatorio y debe ser texto';
+    }
+    if (Array.from(title).length > 200) {
+        return 'El título no puede superar los 200 caracteres';
+    }
+    if (typeof content !== 'string' || content.trim().length === 0) {
+        return 'El contenido es obligatorio y debe ser texto';
+    }
+    if (!Number.isInteger(author_id) || author_id < 1 || author_id > 2147483647) {
+        return 'El ID del autor debe ser un entero positivo válido';
+    }
+    if (published !== undefined && typeof published !== 'boolean') {
+        return 'El campo published debe ser booleano';
+    }
+    return null;
+};
+
 const getPosts = async (req, res) => {
     try {
 
@@ -60,8 +80,9 @@ const createPost = async (req, res) => {
     try {
         const { title, content, author_id, published } = req.body;
 
-        if (!title || !content || !author_id) {
-            return res.status(400).json({ message: 'El título, el contenido y el ID del autor son obligatorios' });
+        const validationError = validatePostInput({ title, content, author_id, published });
+        if (validationError) {
+            return res.status(400).json({ message: validationError });
         }
 
         const authorCheck = await pool.query('SELECT id FROM authors WHERE id = $1', [author_id]);
@@ -93,8 +114,9 @@ const updatePost = async (req, res) => {
             return res.status(404).json({ message: 'Publicación no encontrada' });
         }
 
-        if (!title || !content || !author_id) {
-            return res.status(400).json({ message: 'El título, el contenido y el ID del autor son obligatorios' });
+        const validationError = validatePostInput({ title, content, author_id, published });
+        if (validationError) {
+            return res.status(400).json({ message: validationError });
         }
 
         const authorCheck = await pool.query('SELECT id FROM authors WHERE id = $1', [author_id]);

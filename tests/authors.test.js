@@ -55,6 +55,30 @@ describe('POST /authors', () => {
 
         expect(response.status).toBe(400);
     });
+
+    it('debería responder con estado 400 si el correo no tiene formato válido', async () => {
+        const response = await request(app)
+            .post('/authors')
+            .send({
+                name: 'Autor con correo inválido',
+                email: 'correo-invalido'
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('message');
+    });
+
+    it('debería responder con estado 400 si el nombre supera los 100 caracteres', async () => {
+        const response = await request(app)
+            .post('/authors')
+            .send({
+                name: 'A'.repeat(101),
+                email: `test.author_${Date.now()}@example.com`
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('message');
+    });
 });
 afterAll(async () => {
     await pool.end();

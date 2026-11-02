@@ -107,6 +107,19 @@ describe('POST /posts', () => {
 
         expect(response.status).toBe(404);
     });
+
+    it('debería responder con estado 400 si el título supera los 200 caracteres', async () => {
+        const response = await request(app)
+            .post('/posts')
+            .send({
+                title: 'T'.repeat(201),
+                content: 'Contenido de prueba',
+                author_id: 4
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('message');
+    });
 });
 
 describe('PUT /posts/:id', () => {

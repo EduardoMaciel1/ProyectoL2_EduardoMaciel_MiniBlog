@@ -1,5 +1,24 @@
 const pool = require('../db');
 
+const validateAuthorInput = ({ name, email, bio }) => {
+    if (typeof name !== 'string' || name.trim().length === 0) {
+        return 'El nombre es obligatorio y debe ser texto';
+    }
+    if (Array.from(name).length > 100) {
+        return 'El nombre no puede superar los 100 caracteres';
+    }
+    if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return 'El correo electrónico no tiene un formato válido';
+    }
+    if (Array.from(email).length > 150) {
+        return 'El correo electrónico no puede superar los 150 caracteres';
+    }
+    if (bio !== undefined && bio !== null && typeof bio !== 'string') {
+        return 'La biografía debe ser texto o null';
+    }
+    return null;
+};
+
 const getAuthors = async (req, res) => {
     try {
        
@@ -37,8 +56,9 @@ const createAuthor = async (req, res) => {
         const { name, email, bio } = req.body;
 
         
-        if (!name || !email) {
-            return res.status(400).json({ message: 'El nombre y el correo son obligatorios' });
+        const validationError = validateAuthorInput({ name, email, bio });
+        if (validationError) {
+            return res.status(400).json({ message: validationError });
         }
 
         const query = 'INSERT INTO authors (name, email, bio) VALUES ($1, $2, $3) RETURNING *';
@@ -64,8 +84,9 @@ const updateAuthor = async (req, res) => {
         const { name, email, bio } = req.body;
 
         
-        if (!name || !email) {
-            return res.status(400).json({ message: 'El nombre y el correo son obligatorios' });
+        const validationError = validateAuthorInput({ name, email, bio });
+        if (validationError) {
+            return res.status(400).json({ message: validationError });
         }
 
         const query = 'UPDATE authors SET name = $1, email = $2, bio = $3 WHERE id = $4 RETURNING *';

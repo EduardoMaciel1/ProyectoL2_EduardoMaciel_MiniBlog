@@ -135,4 +135,4 @@ Este registro resume algunas situaciones concretas; no es una transcripción lit
 
 Proyecto: Proyecto integrador L2
 Estudiante: Eduardo Maciel
-Nomnre del proyecto: MiniBlog
+Nombre del proyecto: MiniBlog
