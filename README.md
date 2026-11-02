@@ -91,7 +91,7 @@ npm.cmd test
 
 ## Documentación OpenAPI
 
-La especificación OpenAPI se encuentra en [`openapi.yaml`](./openapi.yaml). Puedes abrir el archivo en un editor compatible con YAML u OpenAPI. El proyecto no incluye una interfaz Swagger UI.
+La documentación interactiva Swagger UI está disponible en `http://localhost:3000/api-docs` cuando el servidor está en ejecución. Desde allí puedes consultar las rutas y probar las solicitudes. La especificación OpenAPI también está disponible en [`openapi.yaml`](./openapi.yaml) y en `http://localhost:3000/openapi.yaml`.
 
 ## Despliegue en Railway
 
