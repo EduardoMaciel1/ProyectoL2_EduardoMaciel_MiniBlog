@@ -44,6 +44,17 @@ describe('POST /authors', () => {
         const authorId = response.body.id;
         await pool.query('DELETE FROM authors WHERE id = $1', [authorId]);
     });
+
+    it('debería responder con estado 400 al intentar crear un autor sin el campo email', async () => {
+        const response = await request(app)
+            .post('/authors')
+            .send({
+                name: 'Autor Sin Email',
+                bio: 'Biografía de prueba'
+            });
+
+        expect(response.status).toBe(400);
+    });
 });
 afterAll(async () => {
     await pool.end();

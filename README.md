@@ -48,7 +48,7 @@ API REST para administrar autores y publicaciones de un blog. Está desarrollada
 Con PostgreSQL iniciado y `.env` configurado, ejecuta:
 
 ```bash
-node src/server.js
+npm start
 ```
 
 La API estará disponible en `http://localhost:3000`. El puerto predeterminado es `3000`; el servidor también puede usar la variable de entorno `PORT`.
@@ -58,7 +58,7 @@ La API estará disponible en `http://localhost:3000`. El puerto predeterminado e
 Todas las respuestas usan JSON. En las rutas con `:id` o `:authorId`, reemplaza el parámetro por el identificador correspondiente.
 
 | Método | Ruta | Descripción |
-|---|---|---|
+|---|---|
 | GET | `/authors` | Lista todos los autores |
 | GET | `/authors/:id` | Obtiene un autor |
 | POST | `/authors` | Crea un autor |
@@ -100,13 +100,39 @@ El despliegue todavía está pendiente. Para publicarlo:
 1. Sube el repositorio a GitHub.
 2. Crea un proyecto en Railway y conéctalo al repositorio.
 3. Agrega una base de datos PostgreSQL en Railway y configura las variables `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` y `DB_PORT` con los valores proporcionados por ese servicio.
-4. Configura el comando de inicio como `node src/server.js` y ejecuta los scripts SQL para crear las tablas y cargar los datos iniciales.
+4. Configura el comando de inicio como `npm start` y ejecuta los scripts SQL para crear las tablas y cargar los datos iniciales.
 5. Cuando Railway genere el dominio público, reemplaza esta nota con la URL de la API.
 
 No agregues credenciales ni valores privados al repositorio. La aplicación lee la configuración de la base de datos desde variables de entorno.
 
 ## Uso de herramientas de IA
 
-Se utilizó una herramienta de IA como apoyo de aprendizaje durante el desarrollo. Las consultas ayudaron a resolver problemas de configuración de PostgreSQL y a avanzar paso a paso con la API, las pruebas y la documentación OpenAPI. Las sugerencias se revisaron; las funcionalidades se probaron con solicitudes HTTP y pruebas automatizadas. Las decisiones y la implementación final corresponden al estudiante.
+Se utilizó una herramienta de IA como apoyo puntual de aprendizaje durante el desarrollo. Las consultas surgieron de problemas y dudas concretas mientras el estudiante implementaba y probaba el proyecto. El estudiante revisó las sugerencias y comprobó el funcionamiento; las decisiones y la implementación final son responsabilidad del estudiante.
 
-Como registro, esta descripción resume las consultas realizadas durante el trabajo; no es una transcripción literal de cada prompt.
+### Registro de consultas y apoyo recibido
+
+| Situación concreta | Apoyo recibido |
+|---|---|---|
+| `psql` y `createdb` no se reconocían como comandos en PowerShell. | Se indicó cómo localizar y ejecutar las herramientas instaladas de PostgreSQL para crear la base y ejecutar los scripts SQL. |
+| Duda sobre la organización de carpetas y la separación entre rutas y controladores. | Se revisó la estructura existente y se explicó el propósito de separar esas responsabilidades. |
+| Errores al conectar las rutas CRUD con PostgreSQL y al ejecutar las pruebas. | Se revisaron los problemas concretos y se comprobó el resultado de las operaciones y de Jest durante el desarrollo. |
+| Revisión de secciones y sangría en `openapi.yaml`. | Se revisaron los cambios que el estudiante iba realizando para que la documentación coincidiera con las respuestas de la API. |
+| Incorporación de capturas de consultas al README. | Se añadieron las capturas compartidas como evidencia de algunas interacciones reales del proceso. |
+
+Este registro resume algunas situaciones concretas; no es una transcripción literal ni pretende afirmar que el estudiante solicitó que se hiciera el proyecto completo. Las capturas muestran momentos del acompañamiento durante el desarrollo:
+
+#### Planificación y guía paso a paso
+
+![Consulta sobre cómo continuar con el plan de trabajo](./capturas/01-plan-de-trabajo.png)
+
+![Solicitud de guía paso a paso](./capturas/02-guia-paso-a-paso.png)
+
+#### Preferencias de aprendizaje y organización
+
+![Indicación de que el acompañamiento debe ser guiado y sin entregar el código](./capturas/03-preferencia-de-aprendizaje.png)
+
+![Consulta sobre la organización de las carpetas del proyecto](./capturas/04-organizacion-del-proyecto.png)
+
+Proyecto: Proyecto integrador L2
+Estudiante: Eduardo Maciel
+Nomnre del proyecto: MiniBlog
