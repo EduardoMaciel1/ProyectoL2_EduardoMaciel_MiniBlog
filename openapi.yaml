@@ -6,6 +6,8 @@ info:
 servers:
   - url: http://localhost:3000
     description: Servidor local de desarrollo
+  - url: https://proyecto12-eduardomaciel-miniblog-1.onrender.com
+    description: API desplegada en Render
 paths:
   /authors:
     get:
