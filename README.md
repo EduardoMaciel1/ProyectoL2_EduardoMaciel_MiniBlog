@@ -9,13 +9,15 @@ API REST para administrar autores y publicaciones de un blog. Está desarrollada
 - Jest y Supertest para pruebas automatizadas
 - OpenAPI 3.0.3 para documentar los endpoints
 
-## Requisitos
+## Requisitos para ejecutar localmente
 
 - Node.js y npm
 - PostgreSQL
-- Una base de datos local y sus credenciales
+- Las herramientas de línea de comandos de PostgreSQL (`createdb` y `psql`)
 
 ## Instalación y configuración local
+
+Estas instrucciones son para ejecutar la API en tu propia computadora. Si solo quieres probar la versión publicada, ve a [API desplegada](#api-desplegada).
 
 1. Clona el repositorio y abre una terminal en la carpeta del proyecto.
 2. Instala las dependencias:
@@ -24,34 +26,33 @@ API REST para administrar autores y publicaciones de un blog. Está desarrollada
    npm install
    ```
 
-3. Crea una base de datos PostgreSQL llamada `miniblog`.
-4. Crea las tablas y carga los datos iniciales. Desde PowerShell, si PostgreSQL 18 está instalado en la ruta predeterminada:
+3. Crea una base de datos PostgreSQL llamada `miniblog` y ejecuta los scripts de estructura y datos iniciales:
 
-   ```powershell
-   & "C:\Program Files\PostgreSQL\18\bin\createdb.exe" -U postgres miniblog
-   & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d miniblog -f ".\setup.sql"
-   & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d miniblog -f ".\seed.sql"
+   ```bash
+   createdb -U postgres miniblog
+   psql -U postgres -d miniblog -f setup.sql
+   psql -U postgres -d miniblog -f seed.sql
    ```
 
-   Si instalaste otra versión o PostgreSQL en otra ubicación, ajusta la ruta a `createdb.exe` y `psql.exe`. Si esos comandos ya están disponibles en `PATH`, también puedes ejecutarlos directamente como `createdb` y `psql`. Crea la base de datos una sola vez; si ya existe, no repitas el primer comando.
+   Si los comandos no se reconocen, agrega la carpeta `bin` de PostgreSQL al `PATH` o ejecútalos indicando su ruta completa. Ejecuta estos scripts una sola vez para inicializar la base de datos.
 
-5. Copia `.env.example` como `.env` en la raíz del proyecto y configura tus datos locales de PostgreSQL. Reemplaza el valor de `DB_PASSWORD` por tu contraseña:
+4. Copia `.env.example` como `.env` en la raíz del proyecto y configura las credenciales de tu base de datos local. Reemplaza `DB_PASSWORD` por tu contraseña:
 
-   ```powershell
-   Copy-Item .env.example .env
+   ```bash
+   cp .env.example .env
    ```
 
-   No compartas ni subas el archivo `.env`; está excluido por `.gitignore`. El archivo `.env.example` contiene solo valores de ejemplo y sí debe incluirse en el repositorio.
+   El archivo define `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` y `DB_PORT`. No compartas ni subas `.env`; está excluido por `.gitignore`.
 
-## Ejecutar la API
+## Iniciar la API local
 
-Con PostgreSQL iniciado y `.env` configurado, ejecuta:
+Con PostgreSQL iniciado, la base de datos inicializada y `.env` configurado, inicia el servidor:
 
 ```bash
 npm start
 ```
 
-La API estará disponible en `http://localhost:3000`. El puerto predeterminado es `3000`; el servidor también puede usar la variable de entorno `PORT`.
+El servidor queda disponible en `http://localhost:3000` (o en el puerto indicado por la variable `PORT`). Para detenerlo, presiona `Ctrl+C` en la terminal.
 
 ## Endpoints
 
@@ -89,21 +90,15 @@ En Windows PowerShell, si `npm` no se reconoce por la política de ejecución, u
 npm.cmd test
 ```
 
-## Documentación OpenAPI
+## Documentación interactiva (Swagger)
 
-La documentación interactiva Swagger UI está disponible en `http://localhost:3000/api-docs` cuando el servidor está en ejecución. Desde allí puedes consultar las rutas y probar las solicitudes. La especificación OpenAPI también está disponible en [`openapi.yaml`](./openapi.yaml) y en `http://localhost:3000/openapi.yaml`.
+Swagger UI permite consultar los endpoints, sus parámetros y respuestas, y enviar solicitudes de prueba. Está disponible en [`/api-docs` local](http://localhost:3000/api-docs) con el servidor local iniciado, y en la [versión desplegada](https://proyectol2-eduardomaciel-miniblog.onrender.com/api-docs).
 
-## Despliegue en Railway
+La especificación OpenAPI que utiliza Swagger está en [`openapi.yaml`](./openapi.yaml). También puedes consultarla desde la [API local](http://localhost:3000/openapi.yaml) o la [API desplegada](https://proyectol2-eduardomaciel-miniblog.onrender.com/openapi.yaml).
 
-El despliegue todavía está pendiente. Para publicarlo:
+## API desplegada
 
-1. Sube el repositorio a GitHub.
-2. Crea un proyecto en Railway y conéctalo al repositorio.
-3. Agrega una base de datos PostgreSQL en Railway y configura las variables `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` y `DB_PORT` con los valores proporcionados por ese servicio.
-4. Configura el comando de inicio como `npm start` y ejecuta los scripts SQL para crear las tablas y cargar los datos iniciales.
-5. Cuando Railway genere el dominio público, reemplaza esta nota con la URL de la API.
-
-No agregues credenciales ni valores privados al repositorio. La aplicación lee la configuración de la base de datos desde variables de entorno.
+La API está publicada en [Render](https://proyectol2-eduardomaciel-miniblog.onrender.com). Puedes explorarla con Swagger en [`/api-docs`](https://proyectol2-eduardomaciel-miniblog.onrender.com/api-docs) o enviar solicitudes a los endpoints descritos en la documentación.
 
 ## Uso de herramientas de IA
 
